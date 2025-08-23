@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query, Timestamp } from "firebase/firestore";
 import { db } from "../firebase";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 export default function SecretVisitsModal() {
   const [showVisits, setShowVisits] = useState(false);
   const [visits, setVisits] = useState([]);
   const [secretInput, setSecretInput] = useState("");
+  const [expanded, setExpanded] = useState({});
 
   useEffect(() => {
     const secretCode = "christianadmin";
@@ -40,12 +42,18 @@ export default function SecretVisitsModal() {
         };
       });
 
-      console.log("Fetched visits:", data);
       setVisits(data);
     } catch (error) {
       console.error("Error fetching visits:", error);
     }
   };
+
+  const groupedVisits = visits.reduce((acc, visit) => {
+    const platform = visit.platform || "Unknown";
+    if (!acc[platform]) acc[platform] = [];
+    acc[platform].push(visit.timestamp.toLocaleString());
+    return acc;
+  }, {});
 
   return (
     <>
@@ -63,18 +71,31 @@ export default function SecretVisitsModal() {
             </div>
 
             <ul className="space-y-3">
-              {visits.length === 0 && (
+              {Object.keys(groupedVisits).length === 0 && (
                 <li className="text-gray-400 italic">No visits yet.</li>
               )}
-              {visits.map((v, i) => (
+              {Object.entries(groupedVisits).map(([platform, dates]) => (
                 <li
-                  key={i}
-                  className="bg-gray-800 p-3 rounded-xl border border-gray-700 shadow-sm"
+                  key={platform}
+                  className="bg-gray-800 p-3 rounded-xl border border-gray-700 shadow-sm flex flex-col"
                 >
-                  <p><span className="font-semibold">Time:</span> {v.timestamp ? v.timestamp.toLocaleString() : "N/A"}</p>
-                  <p><span className="font-semibold">Agent:</span> {v.userAgent}</p>
-                  <p><span className="font-semibold">Lang:</span> {v.language}</p>
-                  <p><span className="font-semibold">Platform:</span> {v.platform}</p>
+                  <button
+                    className="flex justify-between items-center w-full text-left focus:outline-none"
+                    onClick={() =>
+                      setExpanded((prev) => ({ ...prev, [platform]: !prev[platform] }))
+                    }
+                  >
+                    <span className="font-semibold">{platform}</span>
+                    {expanded[platform] ? <FaChevronUp /> : <FaChevronDown />}
+                  </button>
+
+                  {expanded[platform] && (
+                    <ul className="mt-2 ml-4 list-disc list-inside space-y-1 text-gray-300">
+                      {dates.map((date, idx) => (
+                        <li key={idx}>{date}</li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
