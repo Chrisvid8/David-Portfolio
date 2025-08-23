@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, Timestamp } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -16,7 +16,7 @@ const db = getFirestore(app);
 export async function logVisit() {
   try {
     await addDoc(collection(db, "visits"), {
-      timestamp: new Date(),
+      timestamp: Timestamp.now(),
       userAgent: navigator.userAgent,
       language: navigator.language,
       platform: navigator.platform,

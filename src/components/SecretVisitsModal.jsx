@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, Timestamp } from "firebase/firestore";
 import { db } from "../firebase";
 
 export default function SecretVisitsModal() {
@@ -8,31 +8,42 @@ export default function SecretVisitsModal() {
   const [secretInput, setSecretInput] = useState("");
 
   useEffect(() => {
-  const secretCode = "christianadmin";
+    const secretCode = "christianadmin";
 
-  const handler = (e) => {
-    setSecretInput((prev) => {
-      const key = e.key.length === 1 ? e.key.toLowerCase() : "";
-      const newInput = (prev + key).slice(-secretCode.length);
+    const handler = (e) => {
+      setSecretInput((prev) => {
+        const key = e.key.length === 1 ? e.key.toLowerCase() : "";
+        const newInput = (prev + key).slice(-secretCode.length);
 
-      if (newInput === secretCode) {
-        fetchVisits();
-        setShowVisits(true);
-      }
-      return newInput;
-    });
-  };
+        if (newInput === secretCode) {
+          fetchVisits();
+          setShowVisits(true);
+        }
+        return newInput;
+      });
+    };
 
-  window.addEventListener("keydown", handler);
-  return () => window.removeEventListener("keydown", handler);
-}, []);
-
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
 
   const fetchVisits = async () => {
-    const q = query(collection(db, "visits"), orderBy("timestamp", "desc"));
-    const snapshot = await getDocs(q);
-    setVisits(snapshot.docs.map((doc) => doc.data()));
-    setShowVisits(true);
+    try {
+      const q = query(collection(db, "visits"), orderBy("timestamp", "desc"));
+      const snapshot = await getDocs(q);
+
+      const data = snapshot.docs.map((doc) => {
+        const d = doc.data();
+        return {
+          ...d,
+          timestamp: d.timestamp instanceof Timestamp ? d.timestamp.toDate() : d.timestamp,
+        };
+      });
+
+      setVisits(data);
+    } catch (error) {
+      console.error("Error fetching visits:", error);
+    }
   };
 
   return (
@@ -50,12 +61,7 @@ export default function SecretVisitsModal() {
             <ul>
               {visits.map((v, i) => (
                 <li key={i} className="mb-2 border-b pb-2">
-                  <p>
-                    <strong>Time:</strong>{" "}
-                    {v.timestamp?.seconds
-                      ? new Date(v.timestamp.seconds * 1000).toLocaleString()
-                      : "N/A"}
-                  </p>
+                  <p><strong>Time:</strong> {v.timestamp ? new Date(v.timestamp).toLocaleString() : "N/A"}</p>
                   <p><strong>Agent:</strong> {v.userAgent}</p>
                   <p><strong>Lang:</strong> {v.language}</p>
                   <p><strong>Platform:</strong> {v.platform}</p>
