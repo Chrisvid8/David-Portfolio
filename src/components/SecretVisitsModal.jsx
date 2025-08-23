@@ -36,10 +36,11 @@ export default function SecretVisitsModal() {
         const d = doc.data();
         return {
           ...d,
-          timestamp: d.timestamp instanceof Timestamp ? d.timestamp.toDate() : d.timestamp,
+          timestamp: d.timestamp instanceof Timestamp ? d.timestamp.toDate() : new Date(d.timestamp),
         };
       });
 
+      console.log("Fetched visits:", data);
       setVisits(data);
     } catch (error) {
       console.error("Error fetching visits:", error);
@@ -59,9 +60,10 @@ export default function SecretVisitsModal() {
               Close
             </button>
             <ul>
+              {visits.length === 0 && <li>No visits yet.</li>}
               {visits.map((v, i) => (
                 <li key={i} className="mb-2 border-b pb-2">
-                  <p><strong>Time:</strong> {v.timestamp ? new Date(v.timestamp).toLocaleString() : "N/A"}</p>
+                  <p><strong>Time:</strong> {v.timestamp ? v.timestamp.toLocaleString() : "N/A"}</p>
                   <p><strong>Agent:</strong> {v.userAgent}</p>
                   <p><strong>Lang:</strong> {v.language}</p>
                   <p><strong>Platform:</strong> {v.platform}</p>

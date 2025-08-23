@@ -26,4 +26,4 @@ export async function logVisit() {
   }
 }
 
-export { db };
+export { db, Timestamp };
