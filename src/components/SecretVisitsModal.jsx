@@ -50,23 +50,31 @@ export default function SecretVisitsModal() {
   return (
     <>
       {showVisits && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-          <div className="bg-white text-black p-6 rounded-lg w-96 max-h-[80vh] overflow-y-auto shadow-lg">
-            <h2 className="text-xl font-bold mb-4">👀 Visitor Logs</h2>
-            <button
-              className="bg-red-500 text-white px-3 py-1 rounded mb-4"
-              onClick={() => setShowVisits(false)}
-            >
-              Close
-            </button>
-            <ul>
-              {visits.length === 0 && <li>No visits yet.</li>}
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 transition-opacity">
+          <div className="bg-gray-900 text-white p-6 md:p-8 rounded-2xl w-11/12 max-w-lg max-h-[80vh] overflow-y-auto shadow-2xl border border-gray-700">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">👀 Visitor Logs</h2>
+              <button
+                className="text-gray-300 hover:text-white transition text-lg font-bold"
+                onClick={() => setShowVisits(false)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <ul className="space-y-3">
+              {visits.length === 0 && (
+                <li className="text-gray-400 italic">No visits yet.</li>
+              )}
               {visits.map((v, i) => (
-                <li key={i} className="mb-2 border-b pb-2">
-                  <p><strong>Time:</strong> {v.timestamp ? v.timestamp.toLocaleString() : "N/A"}</p>
-                  <p><strong>Agent:</strong> {v.userAgent}</p>
-                  <p><strong>Lang:</strong> {v.language}</p>
-                  <p><strong>Platform:</strong> {v.platform}</p>
+                <li
+                  key={i}
+                  className="bg-gray-800 p-3 rounded-xl border border-gray-700 shadow-sm"
+                >
+                  <p><span className="font-semibold">Time:</span> {v.timestamp ? v.timestamp.toLocaleString() : "N/A"}</p>
+                  <p><span className="font-semibold">Agent:</span> {v.userAgent}</p>
+                  <p><span className="font-semibold">Lang:</span> {v.language}</p>
+                  <p><span className="font-semibold">Platform:</span> {v.platform}</p>
                 </li>
               ))}
             </ul>
