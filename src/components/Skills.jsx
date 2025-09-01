@@ -1,5 +1,13 @@
-import { FaHtml5, FaCss3Alt, FaBootstrap, FaJsSquare, FaReact, FaJava, FaPython, FaGitAlt, FaGithub } from 'react-icons/fa';
-import { SiMysql, SiPostgresql, SiFirebase, SiFlask, SiVercel, SiRender } from 'react-icons/si';
+import { 
+  FaHtml5, FaCss3Alt, FaBootstrap, FaJsSquare, FaReact, 
+  FaJava, FaPython, FaGitAlt, FaGithub 
+} from 'react-icons/fa';
+
+import { 
+  SiMysql, SiPostgresql, SiFirebase, SiFlask, 
+  SiVercel, SiRender, SiTailwindcss 
+} from 'react-icons/si'; 
+
 import firestoreLogo from '../assets/firestore.svg';
 import csharpLogo from '../assets/Csharp.png';
 import { motion } from 'framer-motion';
@@ -43,6 +51,7 @@ function Skills() {
           <SkillIcon name="Bootstrap"><FaBootstrap size={iconSize} className="text-purple-600" draggable="false" /></SkillIcon>
           <SkillIcon name="JavaScript"><FaJsSquare size={iconSize} className="text-yellow-400" draggable="false" /></SkillIcon>
           <SkillIcon name="React"><FaReact size={iconSize} className="text-cyan-400" draggable="false" /></SkillIcon>
+          <SkillIcon name="Tailwind CSS"><SiTailwindcss size={iconSize} className="text-sky-400" draggable="false" /></SkillIcon>
         </SkillCategory>
 
         <SkillCategory title="Backend">
@@ -83,6 +92,7 @@ function Skills() {
             <li>Problem Solving</li>
             <li>Organizational Skills</li>
             <li>Time Management</li>
+            <li>Debugging</li>
           </ul>
         </SkillCategory>
       </div>

@@ -3,7 +3,7 @@ import { useRef } from "react";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { FaHtml5, FaCss3Alt, FaBootstrap, FaJsSquare, FaReact, FaJava, FaPython, FaGitAlt, FaGithub } from 'react-icons/fa';
-import { SiMysql, SiPostgresql, SiFirebase, SiFlask } from 'react-icons/si';
+import { SiMysql, SiPostgresql, SiFirebase, SiFlask, SiTailwindcss } from 'react-icons/si';
 import csharpLogo from '../assets/Csharp.png';
 import firestoreLogo from '../assets/firestore.svg';
 import BackToTopButton from '../components/BackToTopButton';
@@ -33,7 +33,8 @@ function SkillsPage() {
         { name: "CSS3", icon: <FaCss3Alt className="text-blue-500" size="2rem" />, desc: "Styled web apps with CSS, focusing on responsive design for different devices." },
         { name: "Bootstrap", icon: <FaBootstrap className="text-purple-600" size="2rem" />, desc: "Used Bootstrap to speed up development and ensure consistent UI components in DTI Admin Website." },
         { name: "JavaScript", icon: <FaJsSquare className="text-yellow-400" size="2rem" />, desc: "Implemented dynamic features in capstone and OJT projects, improving interactivity." },
-        { name: "React.js", icon: <FaReact className="text-cyan-400" size="2rem" />, desc: "Developed personal CRUD web app with modern React workflows." }
+        { name: "React.js", icon: <FaReact className="text-cyan-400" size="2rem" />, desc: "Developed personal CRUD web app with modern React workflows." },
+        { name: "Tailwind CSS", icon: <SiTailwindcss className="text-sky-400" size="2rem" />, desc: "Styled portfolio with Tailwind CSS for modern, responsive UIs." }
       ]
     },
     {
